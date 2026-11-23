@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Halo: Combat Evolved in your browser</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='13' font-size='13'%3E%F0%9F%8E%AE%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<main>
+  <h1>Halo: Combat Evolved in your browser</h1>
+  <p class="lede">This page runs from your own game files. Nothing is uploaded: files stay in this browser's storage, and multiplayer connects directly between players.</p>
+
+  <section class="step" aria-labelledby="h-files">
+    <div class="n" aria-hidden="true">1</div>
+    <div>
+      <h2 id="h-files">Add your game files</h2>
+      <p>Drop your game's <code>maps</code> folder here, or choose it. Only <code>.map</code> files are kept.</p>
+      <div id="drop" class="drop" tabindex="0" role="button" aria-label="Drop the maps folder here, or press Enter to choose files">Drop the maps folder here</div>
+      <div class="row">
+        <button id="pickDir" type="button">Choose folder</button>
+        <button id="pickFiles" type="button">Choose files</button>
+        <progress id="prog" value="0" max="1" hidden></progress><span id="progLabel" class="note"></span>
+      </div>
+      <input id="dirInput" type="file" webkitdirectory multiple hidden>
+      <input id="fileInput" type="file" accept=".map" multiple hidden>
+      <ul id="maps" class="maps"></ul>
+      <p id="mapStatus" class="note"></p>
+      <p id="storage" class="note"></p>
+    </div>
+  </section>
+
+  <section class="step" aria-labelledby="h-mp">
+    <div class="n" aria-hidden="true">2</div>
+    <div>
+      <h2 id="h-mp">Multiplayer (optional)</h2>
+      <p>No server is involved. The host sends each player an invite code, and each player sends back an answer code, using any chat app.</p>
+      <div class="cols">
+        <div>
+          <h3>Host a match</h3>
+          <div class="row">
+            <button id="hostCreate" type="button">Create match</button>
+            <button id="hostAdd" type="button" disabled>Add player</button>
+          </div>
+          <div id="slots"></div>
+        </div>
+        <div>
+          <h3>Join a match</h3>
+          <label for="joinOffer" class="note">Paste the host's invite code</label>
+          <textarea id="joinOffer" spellcheck="false" autocomplete="off"></textarea>
+          <div class="row"><button id="joinGo" type="button">Create answer code</button></div>
+          <div id="joinOut" hidden>
+            <label for="joinAnswer" class="note">Send this answer code back to the host</label>
+            <textarea id="joinAnswer" readonly></textarea>
+            <div class="row"><button id="joinCopy" type="button">Copy answer code</button></div>
+          </div>
+        </div>
+      </div>
+      <p id="netStatus" class="note" aria-live="polite">Not in a match.</p>
+      <div class="row"><button id="loopback" type="button">Test connection on this device</button><span id="loopResult" class="note" aria-live="polite"></span></div>
+    </div>
+  </section>
+
+  <section class="step" aria-labelledby="h-perf">
+    <div class="n" aria-hidden="true">3</div>
+    <div>
+      <h2 id="h-perf">Performance</h2>
+      <p class="note">Defaults suit a 4 GB Chromebook: 720p render height, compressed textures, no dynamic shadows or specular bloom.</p>
+      <div class="row">
+        <label class="inline">Render height
+          <select id="renderHeight"><option>540</option><option selected>720</option><option>900</option><option>1080</option></select></label>
+        <label class="inline">Map cache
+          <select id="cacheMiB"><option>64</option><option selected>128</option><option>256</option><option>512</option></select> MiB</label>
+        <label class="inline"><input type="checkbox" id="shadows"> Dynamic shadows</label>
+        <label class="inline"><input type="checkbox" id="bloom"> Specular bloom</label>
+      </div>
+      <p id="caps" class="note"></p>
+    </div>
+  </section>
+
+  <section id="launchBar" class="row" style="justify-content: space-between;">
+    <span id="launchHint" class="note"></span>
+    <span class="row" style="margin:0"><button id="fs" type="button" hidden>Fullscreen</button><button id="launch" type="button" class="primary" disabled>Launch</button></span>
+  </section>
+
+  <div id="stage" hidden><canvas id="canvas" tabindex="-1"></canvas><p class="note">Click the game view to capture the mouse. Press Esc to release it.</p></div>
+  <pre id="log" aria-label="Game log" hidden></pre>
+</main>
+<script src="./config.js"></script>
+<script src="./webrtc_serverless.js"></script>
+<script src="./asset_loader.js"></script>
+<script src="./shader_cache.js"></script>
+<script src="./launcher.js"></script>
+</body>
+</html>
